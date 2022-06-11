@@ -33,6 +33,12 @@ pretty_print_pathnames() {
     done
 }
 
+read_confirm() {
+    local input
+    read -rp "${1} [y/other] " input
+    [[ "${input}" == [yY]* ]] || abort
+}
+
 execute() {
     local need_delete=(
         "/opt/bytebase"
@@ -42,6 +48,8 @@ execute() {
 
     echo "The following Bytebase files or directories will be removed:"
     pretty_print_pathnames ${need_delete[@]}
+
+    read_confirm "Are you sure you want to uninstall bytebase? This will remove the files or directories above!"
 
     local path
     for path in ${need_delete[@]}; do
