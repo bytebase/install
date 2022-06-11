@@ -31,12 +31,15 @@ pretty_print_pathnames() {
             echo "${path}"
         fi
     done
+    echo ""
 }
 
 read_confirm() {
     local input
-    read -rp "${1} [y/other] " input
-    [[ "${input}" == [yY]* ]] || abort
+    if [[ "${NONINTERACTIVE-}" != "1" ]]; then
+        read -rp "${1} [y/other] " input
+        [[ "${input}" == [yY]* ]] || abort
+    fi
 }
 
 execute() {
