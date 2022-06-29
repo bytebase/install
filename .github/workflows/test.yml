@@ -4,7 +4,7 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-# Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
   Install-Bytebase-BB:
@@ -14,6 +14,6 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bytebase/install/master/install.sh)"
-        bytebase version
-        bb version
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bytebase/install/master/install.sh)"
+          bytebase version
+          bb version
