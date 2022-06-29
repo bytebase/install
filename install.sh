@@ -11,7 +11,7 @@ abort() {
 
 uname_os() {
     local OS="$(uname -s)"
-    if [[ "${OS}" != "Darwin" && "${OS}" ]]; then
+    if [[ "${OS}" != "Darwin" && "${OS}" != "Linux" ]]; then
         abort "OS ${OS} is not support, bytebase is only supported on Linux and MacOS"
     fi
     echo ${OS}
