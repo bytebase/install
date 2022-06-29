@@ -1,0 +1,19 @@
+name: Install Bytebase And BB by Using Script
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  Install-Bytebase-BB:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{matrix.os}}
+    steps:
+      - run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bytebase/install/master/install.sh)"
+        bytebase version
+        bb version
