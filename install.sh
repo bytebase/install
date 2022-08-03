@@ -89,7 +89,6 @@ execute() {
     trap "rm -r ${tmp_dir}" EXIT
 
     VERSION="$(get_bytebase_latest_version ${tmp_dir}/VERSION)"
-    VERSION="1.2.2"
     echo "Get bytebase latest version: ${VERSION}"
 
     echo "Downloading tarball into ${tmp_dir}"
