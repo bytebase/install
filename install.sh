@@ -101,9 +101,9 @@ execute() {
     cd "${bytebase_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
 
     echo "Start installing bytebase and bb ${VERSION}"
-    sudo install -b "${bytebase_dir}/bytebase" "${install_dir}"
+    sudo install "${bytebase_dir}/bytebase" "${install_dir}"
     echo "Installed bytebase ${VERSION} to ${install_dir}"
-    sudo install -b "${bytebase_dir}/bb" "${install_dir}"
+    sudo install "${bytebase_dir}/bb" "${install_dir}"
     echo "Installed bb ${VERSION} to ${install_dir}"
     echo ""
     echo "Check the usage with"
