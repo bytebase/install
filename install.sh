@@ -2,7 +2,7 @@
 
 # Users can install the latest version of bytebase by execute this script instead of cloning the whole bytebase GitHub repository and build by themselves.
 
-set -u
+set -eu
 
 abort() {
     printf "%s\n" "$@" >&2
