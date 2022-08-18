@@ -56,7 +56,7 @@ http_download() {
 }
 
 get_bytebase_latest_version() {
-    local version_url="https://raw.githubusercontent.com/bytebase/bytebase/main/scripts/VERSION"
+    local version_url="https://raw.githubusercontent.com/bytebase/bytebase.com/main/VERSION"
     local local_file=$1
 
     local code=$(curl -w '%{http_code}' -sL -o "${local_file}" "${version_url}")
