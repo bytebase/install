@@ -10,7 +10,7 @@ abort() {
 }
 
 uname_os() {
-    local OS="$(uname -s)"
+    OS="$(uname -s)"
     if [ "${OS}" != "Darwin" ] && [ "${OS}" != "Linux" ]; then
         abort "OS ${OS} is not support, bytebase is only supported on Linux and MacOS"
     fi
@@ -18,7 +18,7 @@ uname_os() {
 }
 
 uname_arch() {
-    local ARCH=$(uname -m)
+    ARCH=$(uname -m)
     if [ "${ARCH}" = "amd64" ] || [ "${ARCH}" = "x86_64" ]; then
         ARCH="amd64"
     elif [ "${ARCH}" != "arm64" ]; then
@@ -28,26 +28,26 @@ uname_arch() {
 }
 
 test_curl() {
-    local curl_version=$(curl --version 2>/dev/null)
+    curl_version=$(curl --version 2>/dev/null)
     if [ $? -ne 0 ]; then
         abort "You must install curl before installing bytebase."
     fi
 }
 
 test_tar() {
-    local tar_version=$(tar --version 2>/dev/null)
+    tar_version=$(tar --version 2>/dev/null)
     if [ $? -ne 0 ]; then
         abort "You must install tar before installing bytebase."
     fi
 }
 
 http_download() {
-    local local_file=$1
-    local source_url=$2
+    local_file=$1
+    source_url=$2
 
     echo "Start downloading ${source_url}..."
 
-    local code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
+    code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
     if [ "$code" != "200" ]; then
         abort "Failed to download from ${source_url}, status code: ${code}"
     fi
@@ -56,15 +56,15 @@ http_download() {
 }
 
 get_bytebase_latest_version() {
-    local version_url="https://raw.githubusercontent.com/bytebase/bytebase.com/main/VERSION"
-    local local_file=$1
+    version_url="https://raw.githubusercontent.com/bytebase/bytebase.com/main/VERSION"
+    local_file=$1
 
-    local code=$(curl -w '%{http_code}' -sL -o "${local_file}" "${version_url}")
+    code=$(curl -w '%{http_code}' -sL -o "${local_file}" "${version_url}")
     if [ "$code" != "200" ]; then
         abort "Failed to get bytebase latest version from ${version_url}, status code: ${code}"
     fi
 
-    local version=$(<${local_file})
+    version=$(<${local_file})
 
     echo "${version}"
 }
