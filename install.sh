@@ -64,7 +64,7 @@ get_bytebase_latest_version() {
         abort "Failed to get bytebase latest version from ${version_url}, status code: ${code}"
     fi
 
-    version=$(<${local_file})
+    version=$(cat ${local_file})
 
     echo "${version}"
 }
