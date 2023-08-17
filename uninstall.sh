@@ -10,9 +10,13 @@ abort() {
 }
 
 have_sudo_access() {
-    if [[ ! -x "/usr/bin/sudo" ]]; then
+    if [ ! -x "/usr/bin/sudo" ]; then
         return 1
     fi
+}
+
+realpath() {
+    cd "$(dirname "$1")" && echo "$(pwd -P)/$(basename "$1")"
 }
 
 resolved_pathname() {
@@ -20,11 +24,11 @@ resolved_pathname() {
 }
 
 pretty_print_pathnames() {
-    local path
+    path
     for path in "$@"; do
-        if [[ -L "${path}" ]]; then
+        if [ -L "${path}" ]; then
             printf '%s -> %s\n' "${path}" "$(resolved_pathname "${path}")"
-        elif [[ -d "${path}" ]]; then
+        elif [ -d "${path}" ]; then
             echo "${path}/"
         else
             # other files
@@ -35,15 +39,15 @@ pretty_print_pathnames() {
 }
 
 read_confirm() {
-    local input
-    if [[ "${NONINTERACTIVE-}" != "1" ]]; then
+    input
+    if [ "${NONINTERACTIVE-}" != "1" ]; then
         read -rp "${1} [y/other] " input
         [[ "${input}" == [yY]* ]] || abort
     fi
 }
 
 execute() {
-    local need_delete=(
+    need_delete=(
         "/opt/bytebase"
         "/usr/local/bin/bytebase"
         "/usr/local/bin/bb"
@@ -54,9 +58,9 @@ execute() {
 
     read_confirm "Are you sure you want to uninstall bytebase? This will remove the files or directories above!"
 
-    local path
+    path
     for path in ${need_delete[@]}; do
-        if [[ -d "${path}" ]]; then
+        if [ -d "${path}" ]; then
             sudo rm -r "$(resolved_pathname "${path}")"
         else
             sudo rm "$(resolved_pathname "${path}")"
