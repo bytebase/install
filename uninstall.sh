@@ -15,6 +15,10 @@ have_sudo_access() {
     fi
 }
 
+realpath() {
+    cd "$(dirname "$1")" && echo "$(pwd -P)/$(basename "$1")"
+}
+
 resolved_pathname() {
     realpath "$1"
 }

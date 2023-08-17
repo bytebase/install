@@ -14,17 +14,17 @@ uname_os() {
     if [[ "${OS}" != "Darwin" && "${OS}" != "Linux" ]]; then
         abort "OS ${OS} is not support, bytebase is only supported on Linux and MacOS"
     fi
-    echo ${OS}
+    echo ${OS} | awk '{print tolower($0)}' 
 }
 
 uname_arch() {
     local ARCH=$(uname -m)
     if [[ "${ARCH}" == "amd64" || "${ARCH}" == "x86_64" ]]; then
-        ARCH="x86_64"
+        ARCH="amd64"
     elif [[ "${ARCH}" != "arm64" ]]; then
         abort "Arch ${ARCH} is not support, bytebase is only supported on x86_64, amd64 and arm64"
     fi
-    echo ${ARCH}
+    echo ${ARCH} | awk '{print tolower($0)}' 
 }
 
 test_curl() {
