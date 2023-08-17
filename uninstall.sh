@@ -10,7 +10,7 @@ abort() {
 }
 
 have_sudo_access() {
-    if [[ ! -x "/usr/bin/sudo" ]]; then
+    if [ ! -x "/usr/bin/sudo" ]; then
         return 1
     fi
 }
@@ -26,9 +26,9 @@ resolved_pathname() {
 pretty_print_pathnames() {
     local path
     for path in "$@"; do
-        if [[ -L "${path}" ]]; then
+        if [ -L "${path}" ]; then
             printf '%s -> %s\n' "${path}" "$(resolved_pathname "${path}")"
-        elif [[ -d "${path}" ]]; then
+        elif [ -d "${path}" ]; then
             echo "${path}/"
         else
             # other files
@@ -40,7 +40,7 @@ pretty_print_pathnames() {
 
 read_confirm() {
     local input
-    if [[ "${NONINTERACTIVE-}" != "1" ]]; then
+    if [ "${NONINTERACTIVE-}" != "1" ]; then
         read -rp "${1} [y/other] " input
         [[ "${input}" == [yY]* ]] || abort
     fi
@@ -60,7 +60,7 @@ execute() {
 
     local path
     for path in ${need_delete[@]}; do
-        if [[ -d "${path}" ]]; then
+        if [ -d "${path}" ]; then
             sudo rm -r "$(resolved_pathname "${path}")"
         else
             sudo rm "$(resolved_pathname "${path}")"
