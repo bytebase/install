@@ -46,7 +46,7 @@ execute() {
     source_url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | awk '{$1=$1};1' | tr -d \")
     if [ -z "$source_url" ]
     then
-        echo "tarball ${local_file} not found"
+        abort "tarball ${local_file} not found"
     fi
     echo "Start downloading ${source_url}..."
     code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
