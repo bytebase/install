@@ -76,7 +76,7 @@ execute() {
 
     echo "Downloading tarball into ${tmp_dir}"
     tarball_name="bytebase_${OS}_${ARCH}.tar.gz"
-    url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*bytebase_darwin_arm64.tar.gz" | cut -d : -f 2,3 | tr -d \")
+    url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | tr -d \")
     http_download "${tmp_dir}/${tarball_name}" $url
 
     echo "Start extracting tarball into ${bytebase_dir}..."
