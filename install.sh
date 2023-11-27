@@ -27,20 +27,6 @@ uname_arch() {
     echo ${ARCH} | awk '{print tolower($0)}' 
 }
 
-http_download() {
-    local_file=$1
-    source_url=$2
-
-    echo "Start downloading ${source_url}..."
-
-    code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
-    if [ "$code" != "200" ]; then
-        abort "Failed to download from ${source_url}, status code: ${code}"
-    fi
-
-    echo "Completed downloading ${source_url}"
-}
-
 execute() {
     OS="$(uname_os)"
     echo "OS: ${OS}"
@@ -55,9 +41,15 @@ execute() {
 
     echo "Downloading tarball into ${tmp_dir}"
     tarball_name="bytebase_${OS}_${ARCH}.tar.gz"
+    local_file="${tmp_dir}/${tarball_name}"
     echo ""
-    url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | awk '{$1=$1};1' | tr -d \")
-    http_download "${tmp_dir}/${tarball_name}" ${url}
+    source_url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | awk '{$1=$1};1' | tr -d \")
+    echo "Start downloading ${source_url}..."
+    code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
+    if [ "$code" != "200" ]; then
+        abort "Failed to download from ${source_url}, status code: ${code}"
+    fi
+    echo "Completed downloading ${source_url}"
 
     echo "Start extracting tarball into ${tmp_dir}..."
     cd "${tmp_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
