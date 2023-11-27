@@ -28,17 +28,14 @@ uname_arch() {
 }
 
 http_download() {
-    local_file=$1
-    source_url=$2
+    echo "Start downloading $2..."
 
-    echo "Start downloading ${source_url}..."
-
-    code=$(curl -w '%{http_code}' -L -o "${local_file}" "${source_url}")
+    code=$(curl -w '%{http_code}' -L -o "$1" "$2")
     if [ "$code" != "200" ]; then
-        abort "Failed to download from ${source_url}, status code: ${code}"
+        abort "Failed to download from $2, status code: ${code}"
     fi
 
-    echo "Completed downloading ${source_url}"
+    echo "Completed downloading $2"
 }
 
 execute() {
