@@ -64,10 +64,6 @@ execute() {
     test_curl
     test_tar
 
-    # Initialize bytebase direcoty
-    bytebase_dir="/opt/bytebase"
-    (sudo mkdir -p "${bytebase_dir}") || abort "cannot create directory ${bytebase_dir}"
-
     install_dir="/usr/local/bin"
 
     tmp_dir=$(mktemp -d) || abort "cannot create temp directory"
@@ -79,12 +75,12 @@ execute() {
     url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | tr -d \")
     http_download "${tmp_dir}/${tarball_name}" $url
 
-    echo "Start extracting tarball into ${bytebase_dir}..."
-    cd "${bytebase_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
+    echo "Start extracting tarball into ${tmp_dir}..."
+    cd "${tmp_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
 
-    sudo install "${bytebase_dir}/bytebase" "${install_dir}"
+    sudo install "${tmp_dir}/bytebase" "${install_dir}"
     echo "Installed bytebase to ${install_dir}"
-    sudo install "${bytebase_dir}/bb" "${install_dir}"
+    sudo install "${tmp_dir}/bb" "${install_dir}"
     echo "Installed bb to ${install_dir}"
     echo ""
     echo "Check the usage with"
