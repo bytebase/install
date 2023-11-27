@@ -58,9 +58,9 @@ execute() {
     echo "Start extracting tarball into ${tmp_dir}..."
     cd "${tmp_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
 
-    sudo install "${tmp_dir}/bytebase" "${install_dir}"
+    sudo install -C "${tmp_dir}/bytebase" "${install_dir}"
     echo "Installed bytebase to ${install_dir}"
-    sudo install "${tmp_dir}/bb" "${install_dir}"
+    sudo install -C "${tmp_dir}/bb" "${install_dir}"
     echo "Installed bb to ${install_dir}"
     echo ""
     echo "Check the usage with"
