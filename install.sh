@@ -55,20 +55,6 @@ http_download() {
     echo "Completed downloading ${source_url}"
 }
 
-get_bytebase_latest_version() {
-    version_url="https://raw.githubusercontent.com/bytebase/bytebase.com/main/VERSION"
-    local_file=$1
-
-    code=$(curl -w '%{http_code}' -sL -o "${local_file}" "${version_url}")
-    if [ "$code" != "200" ]; then
-        abort "Failed to get bytebase latest version from ${version_url}, status code: ${code}"
-    fi
-
-    version=$(cat ${local_file})
-
-    echo "${version}"
-}
-
 execute() {
     OS="$(uname_os)"
     echo "OS: ${OS}"
@@ -88,25 +74,18 @@ execute() {
     # Clean the tmpdir automatically if the shell script exit
     trap "rm -r ${tmp_dir}" EXIT
 
-    VERSION="$(get_bytebase_latest_version ${tmp_dir}/VERSION)"
-    echo "Get bytebase latest version: ${VERSION}"
-
     echo "Downloading tarball into ${tmp_dir}"
-    tarball_name="bytebase_${VERSION}_${OS}_${ARCH}.tar.gz"
-    http_download "${tmp_dir}/${tarball_name}" \
-        "https://github.com/bytebase/bytebase/releases/download/${VERSION}/${tarball_name}"
+    tarball_name="bytebase_${OS}_${ARCH}.tar.gz"
+    url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*bytebase_darwin_arm64.tar.gz" | cut -d : -f 2,3 | tr -d \")
+    http_download "${tmp_dir}/${tarball_name}" $url
 
     echo "Start extracting tarball into ${bytebase_dir}..."
     cd "${bytebase_dir}" && sudo tar -xzf "${tmp_dir}/${tarball_name}"
 
-    echo "Start installing bytebase and bb ${VERSION}"
     sudo install "${bytebase_dir}/bytebase" "${install_dir}"
-    echo "Installed bytebase ${VERSION} to ${install_dir}"
+    echo "Installed bytebase to ${install_dir}"
     sudo install "${bytebase_dir}/bb" "${install_dir}"
-    echo "Installed bb ${VERSION} to ${install_dir}"
-    echo ""
-    echo "Run with demo data"
-    echo "  bytebase --demo"
+    echo "Installed bb to ${install_dir}"
     echo ""
     echo "Check the usage with"
     echo "  bytebase --help"
