@@ -27,20 +27,6 @@ uname_arch() {
     echo ${ARCH} | awk '{print tolower($0)}' 
 }
 
-test_curl() {
-    curl_version=$(curl --version 2>/dev/null)
-    if [ $? -ne 0 ]; then
-        abort "You must install curl before installing bytebase."
-    fi
-}
-
-test_tar() {
-    tar_version=$(tar --version 2>/dev/null)
-    if [ $? -ne 0 ]; then
-        abort "You must install tar before installing bytebase."
-    fi
-}
-
 http_download() {
     local_file=$1
     source_url=$2
@@ -61,9 +47,6 @@ execute() {
     ARCH="$(uname_arch)"
     echo "ARCH: ${ARCH}"
 
-    test_curl
-    test_tar
-
     install_dir="/usr/local/bin"
 
     tmp_dir=$(mktemp -d) || abort "cannot create temp directory"
@@ -73,6 +56,7 @@ execute() {
     echo "Downloading tarball into ${tmp_dir}"
     tarball_name="bytebase_${OS}_${ARCH}.tar.gz"
     echo ""
+    echo ${url}
     url=$(curl -s https://api.github.com/repos/bytebase/bytebase/releases/latest | grep "http.*${tarball_name}" | cut -d : -f 2,3 | tr -d \")
     http_download "${tmp_dir}/${tarball_name}" ${url}
 
