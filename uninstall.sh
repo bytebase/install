@@ -60,6 +60,9 @@ execute() {
 
     path
     for path in ${need_delete[@]}; do
+        if [ ! -e "${path}" ]; then
+            continue
+        fi
         if [ -d "${path}" ]; then
             sudo rm -r "$(resolved_pathname "${path}")"
         else
@@ -67,7 +70,7 @@ execute() {
         fi
     done
 
-    echo "Uninstall bytebase and bb successfully!"
+    echo "Uninstall bytebase successfully!"
 }
 
 execute
