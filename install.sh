@@ -60,12 +60,9 @@ execute() {
 
     sudo install -C "${tmp_dir}/bytebase" "${install_dir}"
     echo "Installed bytebase to ${install_dir}"
-    sudo install -C "${tmp_dir}/bb" "${install_dir}"
-    echo "Installed bb to ${install_dir}"
     echo ""
     echo "Check the usage with"
     echo "  bytebase --help"
-    echo "  bb --help"
 }
 
 execute
